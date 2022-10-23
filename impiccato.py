@@ -4,7 +4,7 @@ import time
 import random
 
 # PAROLA RANDOM
-file = open('C:\\Users\\user\\Desktop\\Proggetti_Python\\altro\\passatempi\\impiccato\\wordlists.txt','r')
+file = open('./wordlists.txt','r')
 content = file.readlines()
 while True:
     casuale = random.randint(0,1159)
