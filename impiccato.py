@@ -1,43 +1,57 @@
 import os
-import time
 import random
 
-wordlist = int(input("Scegli wordlists:\n1- 1000 parole comuni\n2- 28000 parole complesse\n---> "))
-if wordlist == 1:
-    wordlist = 'wordlists.txt'
-    indice = 1159
-else:
-    wordlist = 'wordlists_280000.txt'
-    indice = 279893
+# MODALITA
 
-difficolta = int(input('1- Facile (3-5)\n2- Medio (6-13)\n3- Difficile (14-20)\n---> '))
+modalita = False
+mod = int(input('Selezionare modalità:\n1- Giocatore Singolo\n2- Giocare in due\n---> '))
+if mod == 2:
+    parola = input('Quale parola vuoi far indovinare?\n---> ')
+    modalita = True
 
-if difficolta == 1:
-    difficolta_min = 3
-    difficolta_max = 5
+if mod == 1:
+    wordlist = int(input("Scegli wordlists:\n1- 1000 parole comuni\n2- 280000 parole complesse\n---> "))
+    if wordlist == 1:
+        wordlist = 'wordlists.txt'
+        indice = 1159
+    else:
+        wordlist = 'wordlists_280000.txt'
+        indice = 279893
 
-if difficolta == 2:
-    difficolta_min = 6
-    difficolta_max = 13
+    difficolta = int(input('1- Facile (3-5)\n2- Medio (6-13)\n3- Difficile (14-20)\n---> '))
 
-if difficolta == 3:
-    difficolta_min = 14
-    difficolta_max = 20
+    if difficolta == 1:
+        difficolta_min = 3
+        difficolta_max = 5
+
+    if difficolta == 2:
+        difficolta_min = 6
+        difficolta_max = 13
+
+    if difficolta == 3:
+        difficolta_min = 14
+        difficolta_max = 20
 
 
 # PAROLA RANDOM
-file = open(f'{wordlist}','r')
-content = file.readlines()
+if mod == 1:
+    file = open(f'{wordlist}','r')
+    content = file.readlines()
 def main():
-    while True:
-        casuale = random.randint(0,indice)
-        stringa = content[casuale]
-        if len(stringa) > difficolta_min and len(stringa) < difficolta_max:
-            break
+    if mod == 1:
+        while True:
+            casuale = random.randint(0,indice)
+            stringa = content[casuale]
+            if len(stringa) > difficolta_min and len(stringa) < difficolta_max:
+                break
 
     os.system('clear')
 
-    stringa = stringa.replace('\n','')
+    if modalita:
+        global parola
+        stringa = parola
+    if not modalita:
+        stringa = stringa.replace('\n','')
     lista = list(stringa)
 
 
@@ -91,6 +105,10 @@ def main():
         if errore == 6:
             print("Hai perso!")
             print('LA PAROLA ERA: ',stringa)
+            if modalita:
+                blocco = input('Invia per rigiocare!')
+                os.system('clear')
+                os.system('python3 impiccato.py')
             rifare = input('Rifare? [s/n]\n---> ')
             if rifare == 's':
                 main()
@@ -101,11 +119,14 @@ def main():
             tutto = ' '.join(parola)
             print(tutto)
             print("Hai vinto!")
+            if modalita:
+                blocco = input('Invia per rigiocare!')
+                os.system('clear')
+                os.system('python3 impiccato.py')
             rifare = input('Rifare? [s/n]\n---> ')
             if rifare == 's':
                 main()
             exit()
-        os.system('cls')
-        time.sleep(0.1)
+        os.system('clear')
 
 main()
